@@ -1051,7 +1051,6 @@ async def allkick(event):
     opts = event.pattern_match.group(1).strip()
     
     sensitive = ["s", "silent"]
-    is_silent = None if opts in sensitive else True
 
     if not admin and not creator:
         await event.edit("`#Disclaimer ❌\nThis plugin is specifically for Owners and Co-Founders.`")
@@ -1063,6 +1062,7 @@ async def allkick(event):
         if user.id == lynxget.id:
             pass
         try:
+            is_silent = None if opts in sensitive else True
             await event.client(EditBannedRequest(event.chat_id, int(user.id), ChatBannedRights(until_date=None, view_messages=is_silent)))
         except Exception as e:
             await event.edit(str(e))
