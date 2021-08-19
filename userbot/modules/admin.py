@@ -1054,7 +1054,7 @@ async def allkick(event):
     sensitive = ["s", "silent"]
     is_silent = None if opts in sensitive else True
 
-    if opts == sensitive not admin and not creator:
+    if not admin and not creator:
         await event.edit(clx, "`#Disclaimer ❌\nThis plugin is specifically for Owners and Co-Founders.`")
         return
     await event.edit(clx, "`in Process...`")
