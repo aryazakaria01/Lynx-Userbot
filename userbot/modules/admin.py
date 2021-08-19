@@ -1044,22 +1044,25 @@ async def rem_locks(event):
 
 @register(outgoing=True, pattern=r"^\.allkick(?: |$)(.*)")
 async def allkick(event):
+    opts = event.pattern_match.group(1).strip()
+    clx = await event.edit("Gets member....")
+
     lynxuser = await event.get_chat()
     lynxget = await event.client.get_me()
     admin = lynxuser.admin_rights
     creator = lynxuser.creator
+    sensitive = ["s", "silent"]
+    is_silent = None if opts in sensitive else True
 
-    if not admin and not creator:
-        await event.edit("`#Disclaimer ❌\nThis plugin is specifically for Owners and Co-Founders.`")
+    if opts == sensitive not admin and not creator:
+        await event.edit(clx, "`#Disclaimer ❌\nThis plugin is specifically for Owners and Co-Founders.`")
         return
-    await event.edit("`in Process...`")
+    await event.edit(clx, "`in Process...`")
     everyone = await event.client.get_participants(event.chat_id)
     for user in everyone:
         if user.id == lynxget.id:
             pass
         try:
-            opts = event.pattern_match.group(1).strip()
-            sensitive = ["s", "silent"]
             is_silent = None if opts in sensitive else True
             await event.client(EditBannedRequest(event.chat_id, int(user.id), ChatBannedRights(until_date=None, view_messages=is_silent)))
         except Exception as e:
